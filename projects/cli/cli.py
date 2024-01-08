@@ -17,10 +17,10 @@ def main():
     llm = OpenAI() 
 
     # Instanciando a Chain da CLI e invocando-a com os argumentos do usuário.
-    chain = LLMChain(llm=llm, prompt=prompt)
+    chain = LLMChain(llm=llm, prompt=prompt, output_key='code')
     result = chain(inputs={
         'language':args.language,
-        'task':args.task
+        'task':args.task,
     })
 
     print(result['text'])
