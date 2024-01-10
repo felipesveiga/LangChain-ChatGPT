@@ -1,29 +1,20 @@
-from langchain.prompts import PromptTemplate
-from langchain.llms.openai import OpenAI
-from langchain.chains import LLMChain
+from src.main_chain import main_chain
 from utils._parser import _args
+from utils._configs import _configs
+
+configs = _configs['cli']
 
 def main():
     '''
         Executa a CLI, fazendo uma requisição à OpenAI e retornando seu output.
     '''
-    args = _args(['--language', '--task'])
-
-    # Prompt Template a ser encaminhado à OpenAI
-    prompt = PromptTemplate(template='Write a short {language} function that will {task}',
-                        input_variables=['language', 'task']
-                        )
-    # Classe do LLM.
-    llm = OpenAI() 
-
-    # Instanciando a Chain da CLI e invocando-a com os argumentos do usuário.
-    chain = LLMChain(llm=llm, prompt=prompt, output_key='code')
-    result = chain(inputs={
-        'language':args.language,
+    args = _args(configs['arguments'])
+    chain = main_chain()
+    results = chain(inputs={
         'task':args.task,
+        'language':args.language
     })
-
-    print(result['text'])
+    print(results)
 
 if __name__ == '__main__':
     main()
