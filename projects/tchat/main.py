@@ -1,3 +1,5 @@
+from langchain.chat_models.ollama import ChatOllama
+from langchain.prompts import ChatPromptTemplate
 def main()->None:
     while True:
         content = input('>> ')
