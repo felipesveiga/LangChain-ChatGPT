@@ -1,9 +1,24 @@
-from langchain.chat_models.ollama import ChatOllama
-from langchain.prompts import ChatPromptTemplate
+from langchain.chat_models.openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
+from langchain.chains import LLMChain
+
 def main()->None:
+    prompt = ChatPromptTemplate(
+        input_variables=['content'],
+        messages=[
+            HumanMessagePromptTemplate.from_template('{content}')
+        ]
+    )
+
+    llm = ChatOpenAI()
+    chain = LLMChain(prompt=prompt, llm=llm)
+
     while True:
-        content = input('>> ')
-        print(f'Your answer was: {content}')
+        content = input('>>')
+        result = chain(inputs={
+            'content':content
+        })['text']
+        print(f'Open AI: {result}')
 
 if __name__=='__main__':
     main()
