@@ -1,20 +1,23 @@
 from langchain.chat_models.openai import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
+from langchain.prompts import ChatPromptTemplate, AIMessagePromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder
 from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
 
 def main()->None:
+    memory = ConversationBufferMemory(memory_key='messages', return_messages=True)
     prompt = ChatPromptTemplate(
-        input_variables=['content'],
+        input_variables=['content', 'messages'],
         messages=[
+            MessagesPlaceholder(variable_name='messages'), 
             HumanMessagePromptTemplate.from_template('{content}')
         ]
     )
 
     llm = ChatOpenAI()
-    chain = LLMChain(prompt=prompt, llm=llm)
+    chain = LLMChain(prompt=prompt, llm=llm, memory=memory)
 
     while True:
-        content = input('>>')
+        content = input('>> ')
         result = chain(inputs={
             'content':content
         })['text']
