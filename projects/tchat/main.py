@@ -1,10 +1,14 @@
 from langchain.chat_models.openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, AIMessagePromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder
 from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory, FileChatMessageHistory
 
 def main()->None:
-    memory = ConversationBufferMemory(memory_key='messages', return_messages=True)
+    chat_memory = FileChatMessageHistory('data/messages.json')
+    
+    memory = ConversationBufferMemory(chat_memory=FileChatMessageHistory('data/messages.json'),
+                                      memory_key='messages', 
+                                      return_messages=True)
     prompt = ChatPromptTemplate(
         input_variables=['content', 'messages'],
         messages=[
