@@ -5,8 +5,8 @@ from langchain.memory import ConversationBufferMemory, FileChatMessageHistory
 
 def main()->None:
     chat_memory = FileChatMessageHistory('data/messages.json')
-    
-    memory = ConversationBufferMemory(chat_memory=FileChatMessageHistory('data/messages.json'),
+
+    memory = ConversationBufferMemory(chat_memory=chat_memory,
                                       memory_key='messages', 
                                       return_messages=True)
     prompt = ChatPromptTemplate(
