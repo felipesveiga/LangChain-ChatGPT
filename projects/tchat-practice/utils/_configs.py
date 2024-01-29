@@ -1,9 +1,12 @@
 _configs = {
     'memory':{
+        'llm':{
+            'verbose':True
+        },
         'FileChatMessageHistory':{
             'file_path':'data/messages.json'
         },
-        'ConversationBufferMemory':{
+        'ConversationSummaryMemory':{
             'memory_key':'messages',
             'return_messages':True
         },
@@ -17,6 +20,11 @@ _configs = {
         },
         'HumanMessagePromptTemplate':{
             'template':'{content}'
+        }
+    },
+    'llm_chain':{
+        'llm_chain':{
+            'verbose':True
         }
     }
 }
