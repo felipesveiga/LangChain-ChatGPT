@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "facts-chatbot"
+version = "0.0.1"
+description = "Chat Bot with embeddings for the LangChain course"
+authors = ["felipesveiga <felipesveiga@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "==0.0.352"
+openai = "==0.27.8"
+python-dotenv = "==1.0.0"
+tiktoken = "*"
+chromadb = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
