@@ -1,16 +1,13 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import TextLoader
+from src.db.db import db
+from os.path import exists
 
-# Gerando o embedding de 'hello, world'.
-embeddings = OpenAIEmbeddings()
-emb = embeddings.embed_query('hello, world')
-#embeddings.embed_query()
-# Invocando o splitter do projeto.
-splitter = CharacterTextSplitter(separator='\n',
-                                 chunk_size=200,
-                                 chunk_overlap=0)
+def main():
+    # Evitando a criação de outro Vector Store.
+    if exists('data/'):
+        print('hey')
+    else:
+        db()
+        print('ho')
 
-# Dividindo o texto.
-content = TextLoader('../../assets/04_facts.txt').load_and_split(splitter)
-print(emb)
+if __name__ == '__main__':
+    main()
