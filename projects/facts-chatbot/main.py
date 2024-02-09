@@ -1,13 +1,16 @@
-from src.db.db import db
-from os.path import exists
+from src.chain import chain
+from src.db.db import make_db
 
 def main():
-    # Evitando a criação de outro Vector Store.
-    if exists('data/'):
-        print('hey')
-    else:
-        db()
-        print('ho')
+    # Criação condicional da vector store.
+    make_db() 
+
+    # User prompt.
+    content = input('>> ')
+    result = chain()(content)['result']
+
+    # Retorno OpenAI.
+    print(f'OpenAI: {result}')
 
 if __name__ == '__main__':
     main()
