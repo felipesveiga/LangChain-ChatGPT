@@ -1,8 +1,6 @@
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores.chroma import Chroma
-from langchain.chat_models.openai import ChatOpenAI
-from langchain.chains import RetrievalQA
-from src.db.make_docs import make_docs
+from src.db._make_docs import _make_docs
 from os.path import exists
 
 def _db()->None:
@@ -14,7 +12,7 @@ def _db()->None:
         pass
     else:
         # Invocando os `Documents` do projeto que vão ser convertidos em Embeddings.
-        documents =  make_docs()
+        documents =  _make_docs()
 
         # Criando a DB com os `documents` gerados.
         Chroma.from_documents(documents=documents,
@@ -22,6 +20,10 @@ def _db()->None:
                                     persist_directory='data')
 
 def make_db():
+    '''
+        Cria a Vectorstore apenas quando o diretório 'data' não está
+        presente.
+    '''
     # Evitando a criação de outro Vector Store.
     if exists('data/'):
         pass

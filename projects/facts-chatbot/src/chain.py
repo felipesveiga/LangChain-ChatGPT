@@ -10,7 +10,8 @@ def chain()->RetrievalQA:
     # Criação do retriver de text chunks.
     retriever = Chroma(persist_directory='data',
                        embedding_function=OpenAIEmbeddings()).as_retriever(k=3)
-    
+
+    retriever._get_relevant_documents
     # Instanciando a chain.
     chain = RetrievalQA.from_chain_type(
                             llm=ChatOpenAI(),

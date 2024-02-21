@@ -3,7 +3,7 @@ from langchain.document_loaders import TextLoader
 from langchain_core.documents import Document
 from typing import List
 
-def make_docs(file_path:str='../../assets/04_facts.txt')->List[Document]:
+def _make_docs(file_path:str='../../assets/04_facts.txt')->List[Document]:
     '''
         Função que cria os text chunks do projeto.
     '''
