@@ -1,7 +1,13 @@
 from src.chain import chain
 from src.db.db import make_db
+from warnings import filterwarnings
+
+filterwarnings('ignore')
 
 def main():
+    '''
+        Acionamento do chat bot.
+    '''
     # Criação condicional da vector store.
     make_db() 
 

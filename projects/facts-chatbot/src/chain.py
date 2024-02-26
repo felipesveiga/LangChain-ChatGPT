@@ -2,19 +2,25 @@ from langchain.chains import RetrievalQA
 from langchain.vectorstores.chroma import Chroma
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models.openai import ChatOpenAI
+from src.db._retriever import FilterRetriever
 
 def chain()->RetrievalQA:
     '''
         Função que gera a chain de chat enriquecido por vectorstore.
     '''
-    # Criação do retriver de text chunks.
-    retriever = Chroma(persist_directory='data',
-                       embedding_function=OpenAIEmbeddings()).as_retriever(k=3)
+    embeddings = OpenAIEmbeddings()
+    llm = ChatOpenAI()
 
-    retriever._get_relevant_documents
+    # Criação do retriver de text chunks.
+    chroma = Chroma(persist_directory='data',
+                       embedding_function=embeddings)
+    
+    retriever = FilterRetriever(embeddings=embeddings,
+                                chroma=chroma,
+                                lambda_mult=.8)
     # Instanciando a chain.
     chain = RetrievalQA.from_chain_type(
-                            llm=ChatOpenAI(),
+                            llm=llm,
                             retriever=retriever,
                             chain_type='stuff'
                             )
