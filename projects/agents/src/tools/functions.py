@@ -1,4 +1,4 @@
-from sqlite3 import connect
+from sqlite3 import connect, OperationalError
 from typing import List
 
 def run_query(query:str, database:str='../../assets/06_db.sqlite')->List[str]:
@@ -18,5 +18,8 @@ def run_query(query:str, database:str='../../assets/06_db.sqlite')->List[str]:
     '''
     conn = connect(database)
     cursor = conn.cursor()
-    cursor.execute(query)
-    return cursor.fetchall()
+    try:
+        cursor.execute(query)
+        return cursor.fetchall()
+    except OperationalError as err:
+        return f'The following error occurred whilst executing your query: \n {err}'
