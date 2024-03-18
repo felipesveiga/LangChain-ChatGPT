@@ -1,6 +1,12 @@
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
+from langchain.schema import SystemMessage
+from src.tools.functions import _list_tables
+from src.configs import _configs
 
-def _prompt(human_message:str)->ChatPromptTemplate:
+_configs = _configs['_prompt']
+_configs['SystemMessage']['content'] = _configs['SystemMessage']['content'].format(tables=_list_tables())
+
+def _prompt()->ChatPromptTemplate:
     '''
         Builds our LLM's prompt with the user's request along with the query and its respective output
 
@@ -15,8 +21,9 @@ def _prompt(human_message:str)->ChatPromptTemplate:
     '''
     prompt = ChatPromptTemplate(
         messages=[
-            HumanMessagePromptTemplate.from_template(f'{human_message}'),
-            MessagesPlaceholder(variable_name='agent_scratchpad')
+            SystemMessage(**_configs['SystemMessage']),
+            #HumanMessagePromptTemplate.from_template(**_configs['HumanMessagePromptTemplate']),
+            MessagesPlaceholder(**_configs['MessagesPlaceholder'])
         ]
     )
     return prompt

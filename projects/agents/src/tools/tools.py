@@ -1,5 +1,5 @@
 from langchain.tools import Tool
-from src.tools.functions import run_query
+from src.tools.functions import run_query, describe_tables
 from typing import Callable, Any
 
 def _make_tool(description:str, func:Callable[[Any], Any])->Tool:
@@ -32,3 +32,7 @@ def run_query_tool()->Tool:
     '''
     descripton = 'Performs an SQLite query'
     return _make_tool(descripton=descripton, func=run_query)
+
+def describe_tables_tool()->Tool:
+    description = 'Provides the schema of the desired tables'
+    return _make_tool(description=description, func=describe_tables)
