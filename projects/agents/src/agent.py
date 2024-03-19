@@ -1,9 +1,9 @@
-from langchain.chat_models.openai import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.agents import AgentExecutor, OpenAIFunctionsAgent
 from src._prompt import _prompt
 from src.tools.tools import run_query_tool, describe_tables_tool
 
-tools = [run_query_tool, describe_tables_tool]
+tools = [run_query_tool(), describe_tables_tool()]
 
 def _agent()->OpenAIFunctionsAgent:
     '''
@@ -17,7 +17,8 @@ def _agent()->OpenAIFunctionsAgent:
     global tools
     return OpenAIFunctionsAgent(llm=ChatOpenAI(),
                                 prompt=_prompt(),
-                                tools=tools)
+                                tools=tools
+                                )
 
 def agent()->AgentExecutor:
     '''
@@ -30,5 +31,6 @@ def agent()->AgentExecutor:
     global tools
     return AgentExecutor(
         agent=_agent(),
-        tools=tools
+        tools=tools,
+        verbose=True
     )

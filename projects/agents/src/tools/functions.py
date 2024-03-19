@@ -11,7 +11,8 @@ def _list_tables()->str:
     '''
     conn = connect(database)
     cursor = conn.cursor()
-    outputs = cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+    cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+    outputs = cursor.fetchall()
     return ', '.join([output[0] for output in outputs])
 
 def describe_tables(table_names:List[str])->str:
@@ -28,9 +29,12 @@ def describe_tables(table_names:List[str])->str:
         The description of the tables in a string.
     '''
     tables = ', '.join([f'\'{table}\'' for table in table_names])
+    query = f'SELECT name FROM sqlite_master WHERE type=\'table\' AND name IN ({tables});'
     conn = connect(database)
     cursor = conn.cursor()
-    outputs = cursor.execute(**_configs['describe_tables']['execute'].format(tables=tables))
+    #outputs = cursor.execute(**_configs['describe_tables']['execute'].format(tables=tables))
+    cursor.execute(query)
+    outputs = cursor.fetchall()
     return '\n'.join(description[0] for description in outputs if description[0] is not None)
 
 def run_query(query:str)->List[str]:

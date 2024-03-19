@@ -30,8 +30,8 @@ def run_query_tool()->Tool:
         Returns an object `langchain.tools.Tool` related to the funtion the 
         `src.tools.functions.run_query`.
     '''
-    descripton = 'Performs an SQLite query'
-    return _make_tool(descripton=descripton, func=run_query)
+    description = 'Performs an SQLite query'
+    return _make_tool(description=description, func=run_query)
 
 def describe_tables_tool()->Tool:
     description = 'Provides the schema of the desired tables'

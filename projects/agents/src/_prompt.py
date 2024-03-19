@@ -22,7 +22,7 @@ def _prompt()->ChatPromptTemplate:
     prompt = ChatPromptTemplate(
         messages=[
             SystemMessage(**_configs['SystemMessage']),
-            #HumanMessagePromptTemplate.from_template(**_configs['HumanMessagePromptTemplate']),
+            HumanMessagePromptTemplate.from_template(**_configs['HumanMessagePromptTemplate']),
             MessagesPlaceholder(**_configs['MessagesPlaceholder'])
         ]
     )
