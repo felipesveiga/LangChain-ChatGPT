@@ -2,3 +2,4 @@ projects/facts-chatbot/data/
 **__pycache__**
 **.sqlite
 **tests/
+**data/

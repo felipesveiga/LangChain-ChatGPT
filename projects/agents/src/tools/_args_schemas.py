@@ -12,3 +12,11 @@ class RunQuerySchema(BaseModel):
         Schema for the `run_query_tool`.
     '''
     query: str
+
+class WriteCSVSchema(BaseModel):
+    '''
+        Schema for the `write_csv`.
+    '''
+    query: str
+    output: str
+    filepath: str

@@ -57,3 +57,19 @@ def run_query(query:str)->List[str]:
         return cursor.fetchall()
     except OperationalError as err:
         return f'The following error occurred whilst executing your query: \n {err}'
+    
+def write_csv(query:str, output:str, filepath:str)->None:
+    '''
+        Writes a query and its output into a .csv file.
+
+        Parameters
+        ---------
+        `query`: str
+            The query's text.
+        `output`: str
+            The query's output.
+        `filepath`: str
+            The .csv path.
+    '''
+    with open(filepath, 'w') as f:
+        f.write(f'{query},{output}')

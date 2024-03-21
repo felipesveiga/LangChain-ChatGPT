@@ -1,9 +1,9 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.agents import AgentExecutor, OpenAIFunctionsAgent
 from src._prompt import _prompt
-from src.tools.tools import run_query_tool, describe_tables_tool
+from src.tools.tools import *
 
-tools = [run_query_tool(), describe_tables_tool()]
+tools = [run_query_tool(), describe_tables_tool(), write_csv_tool()]
 
 def _agent()->OpenAIFunctionsAgent:
     '''
