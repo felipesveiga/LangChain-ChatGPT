@@ -1,7 +1,7 @@
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain.schema import SystemMessage
 from src.tools.functions import _list_tables
-from src.configs import _configs
+from src._configs import _configs
 
 _configs = _configs['_prompt']
 _configs['SystemMessage']['content'] = _configs['SystemMessage']['content'].format(tables=_list_tables())
@@ -22,8 +22,9 @@ def _prompt()->ChatPromptTemplate:
     prompt = ChatPromptTemplate(
         messages=[
             SystemMessage(**_configs['SystemMessage']),
+            MessagesPlaceholder(**_configs['MessagesPlaceholderHistory']),
             HumanMessagePromptTemplate.from_template(**_configs['HumanMessagePromptTemplate']),
-            MessagesPlaceholder(**_configs['MessagesPlaceholder'])
+            MessagesPlaceholder(**_configs['MessagesPlaceholderScratchpad'])
         ]
     )
     return prompt
