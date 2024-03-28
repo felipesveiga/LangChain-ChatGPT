@@ -3,7 +3,10 @@ from langchain.agents import AgentExecutor, OpenAIFunctionsAgent
 from src._prompt import _prompt
 from src.tools.tools import *
 from src._memory import _memory
+from utils.callbacks import ChatModelStartCallback
 
+callbacks = [ChatModelStartCallback()]
+llm = ChatOpenAI(callbacks=callbacks)
 tools = [run_query_tool(), describe_tables_tool(), write_csv_tool()]
 
 def _agent()->OpenAIFunctionsAgent:
@@ -16,7 +19,7 @@ def _agent()->OpenAIFunctionsAgent:
 
     '''
     global tools
-    return OpenAIFunctionsAgent(llm=ChatOpenAI(),
+    return OpenAIFunctionsAgent(llm=llm,
                                 prompt=_prompt(),
                                 tools=tools
                                 )
@@ -34,5 +37,5 @@ def agent()->AgentExecutor:
         agent=_agent(),
         tools=tools,
         memory=_memory(),
-        verbose=True
+        verbose=False
     )
