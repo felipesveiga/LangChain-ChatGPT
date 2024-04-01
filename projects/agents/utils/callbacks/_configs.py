@@ -6,16 +6,15 @@ _configs_boxen = {
         'color':'green'
     },
     'ai-function':{
-        'text':'Running tool {tool} with args {args}',
         'color':'cyan'
     },
     'ai':{
         'color':'blue'
     },
     'function':{
-        'color':'purble'
+        'color':'purple'
     },
     'else':{
-        'color':''
+        'color':'white'
     }
 }

@@ -26,16 +26,17 @@ class ChatModelStartCallback(BaseCallbackHandler):
         '''
         for message in messages[0]:
             if message.type=='system':
-                boxen(message.content, title=message.type, **_configs_boxen['system'])
+                print(boxen(message.content, title=message.type, **_configs_boxen['system']))
             elif message.type=='human':
-                boxen(message.content, title=message.type, **_configs_boxen['human'])
+                print(boxen(message.content, title=message.type, **_configs_boxen['human']))
             elif message.type=='ai':
                 if 'function_call' in message.additional_kwargs:
-                    boxen(title=message.type, **_configs_boxen['ai-function'])
+                    call = message.additional_kwargs['function_call']
+                    print(boxen(f'Running tool {call["name"]} with args {call["arguments"]}', title=message.type, **_configs_boxen['ai-function']))
                 else:
-                    boxen(message.content, title=message.type, **_configs_boxen['ai'])
+                    print(boxen(message.content, title=message.type, **_configs_boxen['ai']))
             elif message.type=='function':
-                boxen(message.content, title=message.type, **_configs_boxen['function'])
+                print(boxen(message.content, title=message.type, **_configs_boxen['function']))
             else:
-                boxen(message.content, title=message.type, **_configs_boxen['else'])
+                print(boxen(message.content, title=message.type, **_configs_boxen['else']))
             
