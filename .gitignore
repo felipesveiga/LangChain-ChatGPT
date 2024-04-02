@@ -1,5 +1,8 @@
-projects/facts-chatbot/data/
 **__pycache__**
 **.sqlite
 **tests/
 **data/
+**.env
+**.venv
+**instance
+**.DS_Store
