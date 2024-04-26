@@ -35,7 +35,7 @@ class SqlMessageHistory(BaseChatMessageHistory, BaseModel):
         return add_message_to_conversation(
             conversation_id=self.conversation_id,
             role=message.type,
-            content=message
+            content=message.content
         )
     
     def clear(self):
