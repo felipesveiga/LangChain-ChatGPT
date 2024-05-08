@@ -6,7 +6,7 @@ class StreamingCallback(BaseCallbackHandler):
         Callback aimed at organizing the streaming of tokens provided by 
         a LLM. 
     '''
-    def __init__(self, queue):
+    def __init__(self, queue:Queue):
         self.queue = queue 
         
     def on_llm_new_token(self, token:str, **kwargs)->None:
