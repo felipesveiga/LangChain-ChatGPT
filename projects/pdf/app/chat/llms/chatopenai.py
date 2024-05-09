@@ -14,4 +14,4 @@ def build_llm(chat_args:ChatArgs)->ChatOpenAI:
         -------
         An instance of the language model.
     '''
-    return ChatOpenAI()
+    return ChatOpenAI(streaming=chat_args.streaming)
