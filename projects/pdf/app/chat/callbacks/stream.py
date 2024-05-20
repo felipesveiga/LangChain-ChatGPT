@@ -1,5 +1,9 @@
+from typing import Any, Dict, List
+from uuid import UUID
 from langchain_core.callbacks import BaseCallbackHandler 
 from queue import Queue
+
+from langchain_core.messages import BaseMessage
 
 class StreamingCallback(BaseCallbackHandler):
     '''
@@ -8,6 +12,19 @@ class StreamingCallback(BaseCallbackHandler):
     '''
     def __init__(self, queue:Queue):
         self.queue = queue 
+        self.streaming_ids = set()
+
+    def on_chat_model_start(self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], *, run_id: UUID, **kwargs: Any) -> Any:
+        '''
+            Registers the model's run id if it enables streaming.
+
+            Parameter
+            ---------
+            `run_id`: str
+                The run id.
+        '''
+        if serialized['kwargs']['streamiing']:
+            self.streaming_ids.add(run_id)
         
     def on_llm_new_token(self, token:str, **kwargs)->None:
         '''
@@ -22,11 +39,13 @@ class StreamingCallback(BaseCallbackHandler):
         '''
         self.queue.put(token)
 
-    def on_llm_end(self, response, **kwargs)->None:
+    def on_llm_end(self, response, run_id, **kwargs)->None:
         '''
             Inserts None when the LLM ends its response. 
         '''
-        self.queue.put(None)
+        if run_id in self.streaming_ids: 
+            self.queue.put(None)
+            self.streaming_ids.remove(run_id)
 
     def on_llm_error(self, error, **kwargs)->None:
         '''
