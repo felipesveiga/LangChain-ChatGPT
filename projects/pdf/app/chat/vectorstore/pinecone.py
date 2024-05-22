@@ -13,7 +13,7 @@ vector_store = Pinecone.from_existing_index(
     getenv('PINECONE_INDEX_NAME'), OpenAIEmbeddings()
 )
 
-def build_retriever(chat_args:ChatArgs)->VectorStoreRetriever:
+def build_retriever(chat_args:ChatArgs, k:int)->VectorStoreRetriever:
     '''
         Builds a Vector DB retriever parameterized with the provided 
         chat's metadata.
@@ -22,6 +22,8 @@ def build_retriever(chat_args:ChatArgs)->VectorStoreRetriever:
         ---------
         `chat_args`: `ChatArgs`
             A Pydantic object holding the chat's metadata.
+        `k`: int
+            The amount of chunks to be retrieved from the Vector Store.
 
         Returns
         -------
