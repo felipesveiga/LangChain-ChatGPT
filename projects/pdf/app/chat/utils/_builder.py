@@ -10,11 +10,42 @@ from app.chat.models import ChatArgs
 from typing import Callable, Tuple
 
 def _builder_return(chat_args:ChatArgs, llm:str, retriever:str, memory:str)->Tuple[Callable]:
+    '''
+        Auxiliary function that invokes the building methods of the project's 
+        LangChain components.
+
+        Parameters
+        ----------
+        `chat_args`: `ChatArgs`
+            The `ChatArgs` class with the chat's metadata.
+        `llm`: str
+            The name of the LLM to be used.
+        `retriever`: str
+            The name of the retriever.
+        `memory`: str
+           The name of the memory.
+
+        Returns
+        -------
+        A tuple with the components to be used for a user's chat. 
+    '''
     mappers = [llm_map, retriever_map, memory_map]
     args = [llm, retriever, memory]
     return (mapper[arg](chat_args) for mapper, arg in zip(mappers, args))
 
 def _builder(chat_args:ChatArgs)->Tuple[Callable]:
+    '''
+        Provides the necessary components for a user's chat
+
+        Parameter
+        ---------
+        `chat_args`: ChatArgs
+            A `ChatArgs` with the chat's metadata.
+
+        Returns
+        -------
+        A tuple with the components to be used for a user's chat. 
+    '''
     conversation_id = chat_args.conversation_id
     components = get_conversation_components(conversation_id)
 
