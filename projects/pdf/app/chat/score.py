@@ -1,3 +1,25 @@
+from app.chat.redis import client
+from typing import List
+
+def _hincrby(names:List[str], resources:List[str], score:int)->None:
+    '''
+        Function that updates the scores of all resources of a certain chat.
+
+        Parameters
+        ----------
+        `names`: List[str]
+            A list with the prefix of the tables names.
+        `resources`: List[str]
+            A list with the name of the resources used in the conversation.
+        `score`: int
+            The score assigned to the conversation.
+    '''
+    score = min(max(score, 0), 1)
+    for name, resource in zip(names, resources):
+        client.hincrby(f'{name}_score_values', resource, score)
+        client.hincrby(f'{name}_score_counts', resource, 1)
+         
+
 def score_conversation(
     conversation_id: str, score: float, llm: str, retriever: str, memory: str
 ) -> None:
@@ -16,9 +38,8 @@ def score_conversation(
 
     score_conversation('abc123', 0.75, 'llm_info', 'retriever_info', 'memory_info')
     """
-
-    pass
-
+    names, resources = ['llm', 'retriever', 'memory'], [llm, retriever, memory]
+    _hincrby(names, resources, score)
 
 def get_scores():
     """
