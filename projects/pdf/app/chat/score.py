@@ -1,5 +1,5 @@
 from app.chat.redis import client
-from typing import List
+from typing import List, Dict, Callable, Literal
 
 def _hincrby(names:List[str], resources:List[str], score:int)->None:
     '''
@@ -65,3 +65,13 @@ def get_scores():
     """
 
     pass
+
+def random_component_by_score(component_type:Literal['llm', 'retriever', 'memory'], component_map:Dict[str, Callable]):
+    if component_type not in ['llm', 'retriever', 'memory']:
+        raise ValueError('Invalid Component Type')
+    
+    values = client.hgetall(f'{component_type}_score_values')
+    counts = client.hgetall(f'{component_type}_score_counts')
+
+    # TODO
+    # Fazer uma função que converta os valores dos dicionários em integer!
