@@ -1,5 +1,6 @@
 from app.chat.redis import client
 from typing import List, Dict, Callable, Literal
+import numpy as np
 
 def _hincrby(names:List[str], resources:List[str], score:int)->None:
     '''
@@ -66,12 +67,28 @@ def get_scores():
 
     pass
 
-def random_component_by_score(component_type:Literal['llm', 'retriever', 'memory'], component_map:Dict[str, Callable]):
+def random_component_by_score(component_type:Literal['llm', 'retriever', 'memory'], component_map:Dict[str, Callable])->str:
+    '''
+        Selects a component to be used in a new conversation.
+
+        Parameters
+        ----------
+        `component_type`: Literal['llm', 'retriever', 'memory']
+            The component type we are interested to retrieve.
+        `component_map`: Dict[str, Callable]
+            The dictionary that maps the name of a certain component to its actual object.
+    
+        Returns
+        -------
+        The name of the selected component.
+    '''
     if component_type not in ['llm', 'retriever', 'memory']:
         raise ValueError('Invalid Component Type')
     
     values = client.hgetall(f'{component_type}_score_values')
     counts = client.hgetall(f'{component_type}_score_counts')
+    
+    avg_scores = np.array([values.get(component,1)/counts.get(component,1) for component in component_map.keys()]) +.1 # Just adding .1 in case an unfortunate component happens to receive a down vote right on its first evaluation.
+    probas = avg_scores / avg_scores.sum()
 
-    # TODO
-    # Fazer uma função que converta os valores dos dicionários em integer!
+    return np.random.choice(component_map.keys(), size=1, p=probas)
