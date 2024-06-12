@@ -5,6 +5,7 @@ from app.web.api import (
 from app.web.db.models import Message
 from app.chat.models import ChatArgs
 from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.messages import BaseMessage
 from pydantic import BaseModel
 
 class SqlMessageHistory(BaseChatMessageHistory, BaseModel):

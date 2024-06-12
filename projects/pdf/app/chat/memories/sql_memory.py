@@ -1,5 +1,6 @@
 from langchain.memory import ConversationBufferMemory
-from langchain_core.messages import BaseMessage
+from app.chat.models import ChatArgs
+from app.chat.memories.histories.sql_history import SqlMessageHistory
 
 def build_memory(chat_args:ChatArgs)->ConversationBufferMemory:
     '''
